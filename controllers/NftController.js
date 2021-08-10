@@ -1,15 +1,13 @@
 require('dotenv').config();
-const PORT = process.env.PORT || 3000;
 const DOMAIN = process.env.DOMAIN || 'http://localhost';
 const fs = require('fs');
 const path = require('path');
 const CID = require('cids');
 const multihashing = require('multihashing-async');
-const { json } = require('express');
 
 exports.postFileNFT = async (req, res, next) => {
     try {
-        let uri = DOMAIN + ':' + PORT+ '/static/uploads/' + req.file.filename;
+        let uri = DOMAIN + '/static/uploads/' + req.file.filename;
         res.status(200).json({
             uri
         })
@@ -20,7 +18,7 @@ exports.postFileNFT = async (req, res, next) => {
 exports.uploadInfoNFT = async (req, res, next) => {
     try {
         let tokenId = await createCID(req.body);
-        let uriJson = `${DOMAIN +':'+ PORT}/static/json/${tokenId}.json`;
+        let uriJson = `${DOMAIN}/static/json/${tokenId}.json`;
         
         res.status(200).json({
             jsonUri: uriJson,
