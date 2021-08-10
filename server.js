@@ -8,7 +8,6 @@ const serveStatic = require('serve-static');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DOMAIN = process.env.DOMAIN || 'http://localhost';
 
 app.use(cors());
 app.use(express.json()); 
@@ -24,5 +23,5 @@ app.use('*', (req, res) => {
     })
 })
 app.listen(PORT, ()=>{
-    console.log(`app listening at  ${DOMAIN +':'+ PORT}`);
+    console.log(`app listening at  ${PORT}`);
 });
