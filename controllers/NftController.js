@@ -89,17 +89,47 @@ exports.getNFTbyTokenId = async (req, res, next) => {
 }
 
 const getInfo = async (tokenId) => {
-    let rawdata = fs.readFileSync(path.resolve("./public/json",`${tokenId}.json`));
-    jsonData = JSON.parse(rawdata);
-    let jsonTmp = {
-        title:           jsonData.title,
-        name:            jsonData.properties.name.description,
-        desc:            jsonData.properties.desc.description,
-        uri:             jsonData.properties.image.description,
-        size:            jsonData.properties.size.description,
-        type:            jsonData.properties.type.description,
-        lastModified:    jsonData.properties.lastModified.description,
-        lastModifiedDate:jsonData.properties.lastModifiedDate.description
-    };
-    return jsonTmp;
+    try {
+        let rawdata = fs.readFileSync(path.resolve("./public/json",`${tokenId}.json`));
+        jsonData = JSON.parse(rawdata);
+        let jsonTmp = {
+            title:           jsonData.title,
+            name:            jsonData.properties.name.description,
+            desc:            jsonData.properties.desc.description,
+            uri:             jsonData.properties.image.description,
+            size:            jsonData.properties.size.description,
+            type:            jsonData.properties.type.description,
+            lastModified:    jsonData.properties.lastModified.description,
+            lastModifiedDate:jsonData.properties.lastModifiedDate.description
+        };
+        return jsonTmp;
+    } catch (error) {
+        return {};
+    }
+}
+
+exports.getMultiNFT = async (req, res) => {
+    try {
+        let data = await getMultiInfo(req.body.arrList);
+        res.status(200).json({
+            data
+        })
+    } catch (error) {
+        res.status(400).json({
+            msg: error.message
+        })
+    }
+}
+
+const getMultiInfo = async (arrList) => {
+    try {
+        let arrInfo = [];
+        for(let i=0; i<arrList.length; i++) {
+            let data = await getInfo(arrList[i]);
+            arrInfo.push(data)
+        }
+        return arrInfo;
+    } catch (error) {
+        return [];
+    }
 }

@@ -5,6 +5,8 @@ const cors = require('cors');
 const path = require('path');
 const serveStatic = require('serve-static');
 
+const {fixFolder} = require('./config/fixFolder');
+fixFolder();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
