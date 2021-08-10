@@ -17,7 +17,7 @@ exports.postFileNFT = async (req, res, next) => {
 }
 exports.uploadInfoNFT = async (req, res, next) => {
     try {
-        let tokenId = await createCID(req.body);
+        let tokenId = await createCID(req.body.data.info);
         let uriJson = `${DOMAIN}/static/json/${tokenId}.json`;
         
         res.status(200).json({
@@ -110,7 +110,7 @@ const getInfo = async (tokenId) => {
 
 exports.getMultiNFT = async (req, res) => {
     try {
-        let data = await getMultiInfo(req.body.arrList);
+        let data = await getMultiInfo(req.body.data.arrList);
         res.status(200).json({
             data
         })

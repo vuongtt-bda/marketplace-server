@@ -32,7 +32,7 @@ npm run start
 
 - [domain:port]/api/nft/uploadInfoNft
 
-> **input**:    req.body
+> **input**:    req.body.data.info
 >     
 >            {
 >                "title":           "tiêu đề của sản phẩm nft",
@@ -73,3 +73,23 @@ npm run start
 >            }
 >            
 > **method**:   GET
+
+- [domain:port]/api/nft/getmultinft
+
+> **input**:    req.body.data.arrList
+> 
+> **output**:   infos of multi nft
+>           [
+>            {
+>                "title": "tiêu đề của sản phẩm nft",
+>                "name": "tên sản phẩm nft",
+>                "desc": "mô tả cho sản phẩm nft",
+>                "uri": "http://localhost:3000/static/uploads/2021-08-09T03-28-42.162Z-350x350.jpg",
+>                "size": "5286",
+>                "type": "image/png",
+>                "lastModified": "1627383738225",
+>                "lastModifiedDate": "Tue Jul 27 2021 18:02:18 GMT+0700 (Giờ Đông Dương)"
+>            }
+>           ]
+>            
+> **method**:   POST
