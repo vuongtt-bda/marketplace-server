@@ -1,5 +1,5 @@
 require('dotenv').config();
-const DOMAIN = process.env.DOMAIN || 'http://localhost';
+const DOMAIN = process.env.DOMAIN;
 const fs = require('fs');
 const path = require('path');
 const CID = require('cids');
