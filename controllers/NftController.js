@@ -5,6 +5,23 @@ const path = require('path');
 const CID = require('cids');
 const multihashing = require('multihashing-async');
 
+exports.postNFT = async (req, res, next) => {
+    try {
+        req.body.uri = DOMAIN + '/static/uploads/' + req.file.filename;
+
+        let tokenId = await createCID(req.body);
+        let uriJson = `${DOMAIN}/static/json/${tokenId}.json`;
+        
+        res.status(200).json({
+            jsonUri: uriJson,
+            tokenId,
+            status: 'success'
+        })
+    } catch (error) {
+        res.status(400).json(error);
+    }
+}
+
 exports.postFileNFT = async (req, res, next) => {
     try {
         let uri = DOMAIN + '/static/uploads/' + req.file.filename;
