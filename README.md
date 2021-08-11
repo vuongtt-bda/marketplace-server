@@ -56,6 +56,7 @@ npm run start
 > **input**:    req.body.data.arrList
 > 
 > **output**:   infos of multi nft
+> 
 >           [
 >            {
 >                "title": "tiêu đề của sản phẩm nft",
