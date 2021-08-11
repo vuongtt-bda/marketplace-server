@@ -5,9 +5,11 @@ const path = require('path');
 const CID = require('cids');
 const multihashing = require('multihashing-async');
 
-exports.postNFT = async (req, res, next) => {
+exports.createNewNFT = async (req, res, next) => {
     try {
         req.body.uri = DOMAIN + '/static/uploads/' + req.file.filename;
+        req.body.type = req.file.mimetype;
+        req.body.size = req.file.size;
 
         let tokenId = await createCID(req.body);
         let uriJson = `${DOMAIN}/static/json/${tokenId}.json`;
@@ -22,8 +24,9 @@ exports.postNFT = async (req, res, next) => {
     }
 }
 
-exports.postFileNFT = async (req, res, next) => {
+exports.uploadFileNFT = async (req, res, next) => {
     try {
+        // console.log(req.file);
         let uri = DOMAIN + '/static/uploads/' + req.file.filename;
         res.status(200).json({
             uri
@@ -32,6 +35,7 @@ exports.postFileNFT = async (req, res, next) => {
        res.json(error) 
     }
 }
+
 exports.uploadInfoNFT = async (req, res, next) => {
     try {
         let tokenId = await createCID(req.body.data.info);
@@ -72,18 +76,18 @@ const createCID = async (body) =>{
                 size: {
                     type: "string",
                     description: body.size
-                },
-                lastModified: {
-                    type: "string",
-                    description: body.lastModified
-                },
-                lastModifiedDate: {
-                    type: "string",
-                    description: body.lastModifiedDate
                 }
             }
         }
-        const metadata = JSON.stringify(data);
+                // lastModified: {
+                //     type: "string",
+                //     description: body.lastModified
+                // },
+                // lastModifiedDate: {
+                //     type: "string",
+                //     description: body.lastModifiedDate
+                // }
+        const metadata = JSON.stringify(data, null, 4);
         const bytes = new TextEncoder('utf8').encode(metadata);
         const hash = await multihashing(bytes, 'sha2-256');
         const cid = new CID(1, 'dag-pb', hash);
