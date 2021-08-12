@@ -27,7 +27,7 @@ npm run start
     title: 'text',
     name: 'text',
     desc: 'text'
-](https://nft-node-server.herokuapp.com/static/uploads/2021-08-11T13-36-26.401Z-createNewNFT.png)]()
+](https://nft-node-server.herokuapp.com/static/uploads/2021-08-12T03-17-34.925Z-createNewNFT.png)]()
 > 
 > **output**:   uri of metadata (json file)
 >          
