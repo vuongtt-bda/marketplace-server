@@ -8,15 +8,16 @@ const multihashing = require('multihashing-async');
 exports.createNewNFT = async (req, res, next) => {
     try {
         req.body.uri = DOMAIN + '/static/uploads/' + req.file.filename;
+        req.body.name = req.file.originalname;
         req.body.type = req.file.mimetype;
         req.body.size = req.file.size;
 
-        let tokenId = await createCID(req.body);
-        let uriJson = `${DOMAIN}/static/json/${tokenId}.json`;
+        let tokenURI = await createCID(req.body);
+        let metadataURI = `${DOMAIN}/static/json/${tokenURI}.json`;
         
         res.status(200).json({
-            jsonUri: uriJson,
-            tokenId,
+            metadataURI,
+            tokenURI,
             status: 'success'
         })
     } catch (error) {
@@ -120,12 +121,12 @@ const getInfo = async (tokenId) => {
             uri:             jsonData.properties.image.description,
             size:            jsonData.properties.size.description,
             type:            jsonData.properties.type.description,
-            lastModified:    jsonData.properties.lastModified.description,
-            lastModifiedDate:jsonData.properties.lastModifiedDate.description
+            // lastModified:    jsonData.properties.lastModified.description,
+            // lastModifiedDate:jsonData.properties.lastModifiedDate.description
         };
         return jsonTmp;
     } catch (error) {
-        return {};
+        return {message: "Không tồn tại metadata"};
     }
 }
 
@@ -146,8 +147,10 @@ const getMultiInfo = async (arrList) => {
     try {
         let arrInfo = [];
         for(let i=0; i<arrList.length; i++) {
-            let data = await getInfo(arrList[i]);
-            arrInfo.push(data)
+            let tokenURI = arrList[i];
+            let metadata = await getInfo(tokenURI);
+            let jsonData = { tokenURI, metadata }
+            arrInfo.push(jsonData)
         }
         return arrInfo;
     } catch (error) {
