@@ -1,5 +1,6 @@
 require('dotenv').config();
 const DOMAIN = process.env.DOMAIN;
+const PORT = process.env.PORT;
 const fs = require('fs');
 const path = require('path');
 const CID = require('cids');
@@ -7,13 +8,13 @@ const multihashing = require('multihashing-async');
 
 exports.createNewNFT = async (req, res, next) => {
     try {
-        req.body.uri = DOMAIN + '/static/uploads/' + req.file.filename;
+        req.body.uri = DOMAIN + ':' + PORT + '/static/uploads/' + req.file.filename;
         req.body.name = req.file.originalname;
         req.body.type = req.file.mimetype;
         req.body.size = req.file.size;
 
         let tokenURI = await createCID(req.body);
-        let metadataURI = `${DOMAIN}/static/json/${tokenURI}.json`;
+        let metadataURI = `${DOMAIN + ':' + PORT}/static/json/${tokenURI}.json`;
         
         res.status(200).json({
             metadataURI,
@@ -28,7 +29,7 @@ exports.createNewNFT = async (req, res, next) => {
 exports.uploadFileNFT = async (req, res, next) => {
     try {
         // console.log(req.file);
-        let uri = DOMAIN + '/static/uploads/' + req.file.filename;
+        let uri = DOMAIN + ':' + PORT + '/static/uploads/' + req.file.filename;
         res.status(200).json({
             uri
         })
@@ -40,7 +41,7 @@ exports.uploadFileNFT = async (req, res, next) => {
 exports.uploadInfoNFT = async (req, res, next) => {
     try {
         let tokenId = await createCID(req.body.data.info);
-        let uriJson = `${DOMAIN}/static/json/${tokenId}.json`;
+        let uriJson = `${DOMAIN + ':' + PORT}/static/json/${tokenId}.json`;
         
         res.status(200).json({
             jsonUri: uriJson,
