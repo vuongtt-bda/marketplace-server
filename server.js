@@ -2,7 +2,9 @@ require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
+const morgan = require('morgan')
+const path = require('path')
+const rfs = require('rotating-file-stream')
 const serveStatic = require('serve-static');
 
 const {fixFolder} = require('./config/fixFolder');
@@ -15,6 +17,12 @@ app.use(cors());
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true }));
 app.use('/static', serveStatic(path.join(__dirname, 'public')));
+
+const accessLogStream = rfs.createStream('access.log', { // create a rotating write stream
+    interval: '1d', // rotate daily
+    path: path.join(__dirname, 'log')
+  })
+app.use(morgan('combined', { stream: accessLogStream }))
 
 const nftRoute = require('./routes/NftRoute');
 
