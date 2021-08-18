@@ -22,7 +22,10 @@ exports.createNewNFT = async (req, res, next) => {
             status: 'success'
         })
     } catch (error) {
-        res.status(400).json(error);
+        console.log(error);
+        res.status(400).json({
+            message: "create new nft failed"
+        });
     }
 }
 
